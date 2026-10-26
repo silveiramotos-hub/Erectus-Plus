@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, ShieldCheck, Truck, Lock, MapPin } from 'lucide-react';
+import { Check, ShieldCheck, Truck, Lock, MapPin, ExternalLink } from 'lucide-react';
 import { PRODUCT_KITS } from '../data/catalog';
 import {
   calculateOrderPricing,
@@ -7,23 +7,17 @@ import {
   formatBRL,
   formatCEP,
   type ProductKit,
-  type KitSlug,
 } from '../utils/commerce';
 import { BottleShowcase } from './BottleShowcase';
 
 interface KitsSectionProps {
   sharedCep: string;
   onChangeSharedCep: (cep: string) => void;
-  onSelectKitAndCheckout: (
-    kitSlug: KitSlug,
-    preferredPayment?: 'pix' | 'card'
-  ) => void;
 }
 
 export const KitsSection: React.FC<KitsSectionProps> = ({
   sharedCep,
   onChangeSharedCep,
-  onSelectKitAndCheckout,
 }) => {
   const [priceView, setPriceView] = useState<'pix' | 'card'>('pix');
   const shippingEstimate = calculateShippingEstimate(sharedCep);
@@ -47,7 +41,7 @@ export const KitsSection: React.FC<KitsSectionProps> = ({
               Escolha seu kit de 30, 60 ou 90 Cápsulas
             </h2>
             <p className="mt-2.5 text-sm sm:text-base text-zinc-600">
-              Cada frasco contém 30 cápsulas da Fórmula Extra Forte (1 cápsula por dia). Escolha 30 cápsulas (1 frasco), 60 cápsulas (2 frascos) ou 90 cápsulas (3 frascos).
+              Cada frasco contém 30 cápsulas da Fórmula Extra Forte (1 cápsula por dia). Escolha 30 cápsulas (1 frasco), 60 cápsulas (2 frascos) ou 90 cápsulas (3 frascos) com Frete Grátis.
             </p>
           </div>
 
@@ -242,9 +236,7 @@ export const KitsSection: React.FC<KitsSectionProps> = ({
                         aria-hidden="true"
                       />
                       <span>
-                        {kit.freeShipping
-                          ? 'Frete Grátis Expresso com Seguro e Rastreio'
-                          : 'Envio Expresso para todo o Brasil (R$ 19,90)'}
+                        Frete Grátis Expresso com Seguro e Rastreio
                       </span>
                     </li>
                     <li className="flex items-start gap-2.5">
@@ -261,25 +253,28 @@ export const KitsSection: React.FC<KitsSectionProps> = ({
                   </ul>
                 </div>
 
-                {/* Primary Purchase CTA */}
+                {/* Direct Braip Checkout CTA */}
                 <div>
-                  <button
-                    type="button"
-                    onClick={() => onSelectKitAndCheckout(kit.slug, priceView)}
-                    className={`w-full py-4 px-5 rounded-xl font-bold text-sm sm:text-base transition-colors cursor-pointer whitespace-nowrap ${
+                  <a
+                    href={kit.checkoutUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid={`kit-checkout-link-${kit.slug}`}
+                    className={`w-full py-4 px-5 rounded-xl font-bold text-sm sm:text-base transition-colors cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-2 ${
                       isFeatured
                         ? 'bg-[#B8E900] hover:bg-[#c8f526] text-zinc-950 shadow-lg'
                         : 'bg-[#059669] hover:bg-[#047857] text-white'
                     }`}
                   >
-                    Comprar {kit.capsulesTotal} Cápsulas Agora
-                  </button>
+                    <span>Comprar {kit.capsulesTotal} Cápsulas Agora</span>
+                    <ExternalLink className="w-4 h-4 shrink-0" aria-hidden="true" />
+                  </a>
                   <p
                     className={`text-[11px] text-center mt-2.5 ${
                       isFeatured ? 'text-zinc-400' : 'text-zinc-500'
                     }`}
                   >
-                    {kit.bottles} {kit.bottles === 1 ? 'Frasco' : 'Frascos'} · Posologia: 1 cápsula ao dia
+                    {kit.bottles} {kit.bottles === 1 ? 'Frasco' : 'Frascos'} · Posologia: 1 cápsula ao dia · Checkout Seguro Braip
                   </p>
                 </div>
               </article>
@@ -331,7 +326,7 @@ export const KitsSection: React.FC<KitsSectionProps> = ({
                   {shippingEstimate.businessDaysMin} a{' '}
                   {shippingEstimate.businessDaysMax} dias úteis
                 </span>{' '}
-                · <span className="text-emerald-700 font-semibold">Frete Grátis (60 e 90 Cápsulas)</span>
+                · <span className="text-emerald-700 font-semibold">Frete Grátis em Todos os Kits</span>
               </div>
             ) : (
               <span className="text-xs text-zinc-500">
@@ -365,9 +360,9 @@ export const KitsSection: React.FC<KitsSectionProps> = ({
             <Lock className="w-5 h-5 text-[#990A11] shrink-0 mt-0.5" aria-hidden="true" />
             <div>
               <strong className="text-zinc-900 block">
-                Pagamento Seguro via PIX ou Cartão
+                Checkout Oficial Braip (PIX ou Cartão)
               </strong>
-              Aprovação imediata no PIX ou parcelamento em até 12x no cartão de crédito.
+              Aprovação imediata no PIX ou parcelamento em até 12x no cartão de crédito com segurança Braip.
             </div>
           </div>
         </div>

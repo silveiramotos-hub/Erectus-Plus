@@ -1,6 +1,12 @@
 export type PaymentMethod = 'pix' | 'card' | 'boleto';
 export type KitSlug = 'caps-30' | 'caps-60' | 'caps-90';
 
+export const BRAIP_CHECKOUT_URLS: Record<KitSlug, string> = {
+  'caps-30': 'https://ev.braip.com/checkout/pla48l1v/chedd8lj',
+  'caps-60': 'https://ev.braip.com/checkout/pla0n42m/chedd8lj',
+  'caps-90': 'https://ev.braip.com/checkout/plaoqyz6/chedd8lj',
+};
+
 export interface ProductKit {
   id: string;
   slug: KitSlug;
@@ -17,6 +23,7 @@ export interface ProductKit {
   bestValue: boolean;
   tagText: string;
   recommendedFor: string;
+  checkoutUrl: string;
 }
 
 export interface OrderPricingBreakdown {
@@ -70,6 +77,7 @@ export interface ProtocolQuizInput {
 
 export interface ProtocolRecommendation {
   recommendedKitSlug: KitSlug;
+  checkoutUrl: string;
   dailyDosage: string;
   cycleDays: number;
   capsulesCount: 30 | 60 | 90;
@@ -160,7 +168,7 @@ export function calculateOrderPricing(
     Math.max(0, baseSubtotal - couponDiscountAmount).toFixed(2)
   );
 
-  const shippingCost = kit.freeShipping || safeQty > 1 ? 0 : 19.90;
+  const shippingCost = 0;
   const finalTotal = Number((subtotalAfterCoupon + shippingCost).toFixed(2));
   const perCapsuleFinal = Number((subtotalAfterCoupon / totalCapsules).toFixed(2));
   const perBottleFinal = Number((subtotalAfterCoupon / totalBottles).toFixed(2));
@@ -215,6 +223,7 @@ export function recommendProtocol(input: ProtocolQuizInput): ProtocolRecommendat
   if (score >= 7) {
     return {
       recommendedKitSlug: 'caps-90',
+      checkoutUrl: BRAIP_CHECKOUT_URLS['caps-90'],
       dailyDosage: '1 cápsula por dia com água',
       cycleDays: 90,
       capsulesCount: 90,
@@ -228,6 +237,7 @@ export function recommendProtocol(input: ProtocolQuizInput): ProtocolRecommendat
   if (score >= 5) {
     return {
       recommendedKitSlug: 'caps-60',
+      checkoutUrl: BRAIP_CHECKOUT_URLS['caps-60'],
       dailyDosage: '1 cápsula por dia com água',
       cycleDays: 60,
       capsulesCount: 60,
@@ -240,6 +250,7 @@ export function recommendProtocol(input: ProtocolQuizInput): ProtocolRecommendat
 
   return {
     recommendedKitSlug: 'caps-30',
+    checkoutUrl: BRAIP_CHECKOUT_URLS['caps-30'],
     dailyDosage: '1 cápsula por dia com água',
     cycleDays: 30,
     capsulesCount: 30,

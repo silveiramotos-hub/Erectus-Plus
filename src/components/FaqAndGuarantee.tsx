@@ -2,13 +2,7 @@ import React, { useState } from 'react';
 import { ShieldCheck, ChevronDown } from 'lucide-react';
 import { FAQ_ITEMS } from '../data/catalog';
 
-interface FaqAndGuaranteeProps {
-  onOpenCheckout: () => void;
-}
-
-export const FaqAndGuarantee: React.FC<FaqAndGuaranteeProps> = ({
-  onOpenCheckout,
-}) => {
+export const FaqAndGuarantee: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
@@ -35,13 +29,12 @@ export const FaqAndGuarantee: React.FC<FaqAndGuaranteeProps> = ({
               Adquira seu kit de <strong className="text-white">30, 60 ou 90 cápsulas</strong> do Erectus Plus com total tranquilidade. Você conta com <strong className="text-white">7 dias de garantia oficial</strong> a partir do recebimento do seu pedido, assegurando a autenticidade da Fórmula Extra Forte (Tadalafila + Aminoácidos) e reembolso integral conforme o Código de Defesa do Consumidor.
             </p>
 
-            <button
-              type="button"
-              onClick={onOpenCheckout}
-              className="w-full py-3.5 px-5 text-sm font-bold text-zinc-950 bg-[#B8E900] hover:bg-[#c8f526] rounded-xl transition-colors cursor-pointer whitespace-nowrap"
+            <a
+              href="#kits"
+              className="w-full py-3.5 px-5 text-sm font-bold text-zinc-950 bg-[#B8E900] hover:bg-[#c8f526] rounded-xl transition-colors cursor-pointer whitespace-nowrap inline-flex items-center justify-center"
             >
               Escolher Meu Kit com Garantia de 7 Dias
-            </button>
+            </a>
           </div>
 
           {/* Right 7 Cols: Frequently Asked Questions */}

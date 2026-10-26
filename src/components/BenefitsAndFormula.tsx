@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
+import { ExternalLink } from 'lucide-react';
 import { FORMULA_COMPONENTS, PRODUCT_KITS } from '../data/catalog';
 import {
   recommendProtocol,
   formatBRL,
   type ProtocolQuizInput,
-  type KitSlug,
 } from '../utils/commerce';
 
-interface BenefitsAndFormulaProps {
-  onSelectKitAndCheckout: (kitSlug: KitSlug) => void;
-}
-
-export const BenefitsAndFormula: React.FC<BenefitsAndFormulaProps> = ({
-  onSelectKitAndCheckout,
-}) => {
+export const BenefitsAndFormula: React.FC = () => {
   const [selectedComponentId, setSelectedComponentId] = useState<string>(
     FORMULA_COMPONENTS[0].id
   );
@@ -401,16 +395,19 @@ export const BenefitsAndFormula: React.FC<BenefitsAndFormulaProps> = ({
                 </span>
               </p>
 
-              <button
-                type="button"
-                onClick={() =>
-                  onSelectKitAndCheckout(recommendation.recommendedKitSlug)
-                }
-                className="w-full py-3.5 px-4 text-sm font-bold text-zinc-950 bg-[#B8E900] hover:bg-[#c8f526] rounded-xl transition-colors cursor-pointer whitespace-nowrap"
+              <a
+                href={recommendedKit.checkoutUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="protocol-recommendation-cta"
+                className="w-full py-3.5 px-4 text-sm font-bold text-zinc-950 bg-[#B8E900] hover:bg-[#c8f526] rounded-xl transition-colors cursor-pointer whitespace-nowrap inline-flex items-center justify-center gap-2"
               >
-                Selecionar {recommendedKit.capsulesTotal} Cápsulas ({recommendedKit.bottles}{' '}
-                {recommendedKit.bottles === 1 ? 'Frasco' : 'Frascos'})
-              </button>
+                <span>
+                  Comprar {recommendedKit.capsulesTotal} Cápsulas ({recommendedKit.bottles}{' '}
+                  {recommendedKit.bottles === 1 ? 'Frasco' : 'Frascos'})
+                </span>
+                <ExternalLink className="w-4 h-4 shrink-0" aria-hidden="true" />
+              </a>
             </div>
           </div>
         </div>

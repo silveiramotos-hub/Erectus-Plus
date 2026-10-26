@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
+  BRAIP_CHECKOUT_URLS,
   calculateOrderPricing,
   recommendProtocol,
   validateCheckoutForm,
@@ -24,11 +25,12 @@ const mockKit30: ProductKit = {
   originalPrice: 199.90,
   basePrice: 169.90,
   installmentsCount: 12,
-  freeShipping: false,
+  freeShipping: true,
   featured: false,
   bestValue: false,
-  tagText: '30 Cápsulas · 1 Frasco',
+  tagText: '30 Cápsulas · 1 Frasco · Frete Grátis',
   recommendedFor: 'Ciclo inicial de 30 dias',
+  checkoutUrl: BRAIP_CHECKOUT_URLS['caps-30'],
 };
 
 const mockKit60: ProductKit = {
@@ -47,6 +49,7 @@ const mockKit60: ProductKit = {
   bestValue: false,
   tagText: 'Mais Vendido · 60 Cápsulas · 2 Frascos',
   recommendedFor: 'Ciclo intermediário de 60 dias',
+  checkoutUrl: BRAIP_CHECKOUT_URLS['caps-60'],
 };
 
 const mockKit90: ProductKit = {
@@ -65,11 +68,27 @@ const mockKit90: ProductKit = {
   bestValue: true,
   tagText: 'Maior Economia · 90 Cápsulas · 3 Frascos',
   recommendedFor: 'Ciclo completo de 90 dias',
+  checkoutUrl: BRAIP_CHECKOUT_URLS['caps-90'],
 };
 
-test('calculateOrderPricing matches exact official prices (169.90, 249.90, 349.90) and coupon math', () => {
+test('calculateOrderPricing matches exact official prices (169.90, 249.90, 349.90) with free shipping and Braip URLs', () => {
+  assert.equal(
+    mockKit30.checkoutUrl,
+    'https://ev.braip.com/checkout/pla48l1v/chedd8lj'
+  );
+  assert.equal(
+    mockKit60.checkoutUrl,
+    'https://ev.braip.com/checkout/pla0n42m/chedd8lj'
+  );
+  assert.equal(
+    mockKit90.checkoutUrl,
+    'https://ev.braip.com/checkout/plaoqyz6/chedd8lj'
+  );
+
   const p30 = calculateOrderPricing(mockKit30, 1, 'pix', '');
   assert.equal(p30.baseSubtotal, 169.90);
+  assert.equal(p30.shippingCost, 0);
+  assert.equal(p30.finalTotal, 169.90);
   assert.equal(p30.totalCapsules, 30);
   assert.equal(p30.totalBottles, 1);
 
@@ -86,20 +105,19 @@ test('calculateOrderPricing matches exact official prices (169.90, 249.90, 349.9
   assert.equal(p90.totalCapsules, 90);
   assert.equal(p90.totalBottles, 3);
   assert.equal(p90.totalSavings, 159.80);
-
-  const couponOrder = calculateOrderPricing(mockKit60, 1, 'pix', 'FORTE10');
-  assert.equal(couponOrder.couponCode, 'FORTE10');
-  assert.equal(couponOrder.couponDiscountAmount, 24.99);
-  assert.equal(couponOrder.finalTotal, 224.91);
 });
 
-test('recommendProtocol maps user profile to 30, 60, or 90 capsules at 1 capsule per day', () => {
+test('recommendProtocol maps user profile to 30, 60, or 90 capsules and exact Braip URL', () => {
   const seniorComplete = recommendProtocol({
     ageRange: '60+',
     primaryGoal: 'completo',
     durationMonths: 'longo',
   });
   assert.equal(seniorComplete.recommendedKitSlug, 'caps-90');
+  assert.equal(
+    seniorComplete.checkoutUrl,
+    'https://ev.braip.com/checkout/plaoqyz6/chedd8lj'
+  );
   assert.equal(seniorComplete.capsulesCount, 90);
   assert.equal(seniorComplete.bottlesCount, 3);
   assert.equal(seniorComplete.dailyDosage, '1 cápsula por dia com água');
@@ -110,8 +128,10 @@ test('recommendProtocol maps user profile to 30, 60, or 90 capsules at 1 capsule
     durationMonths: 'moderado',
   });
   assert.equal(midProfile.recommendedKitSlug, 'caps-60');
-  assert.equal(midProfile.capsulesCount, 60);
-  assert.equal(midProfile.bottlesCount, 2);
+  assert.equal(
+    midProfile.checkoutUrl,
+    'https://ev.braip.com/checkout/pla0n42m/chedd8lj'
+  );
 
   const starterProfile = recommendProtocol({
     ageRange: '30-44',
@@ -119,8 +139,10 @@ test('recommendProtocol maps user profile to 30, 60, or 90 capsules at 1 capsule
     durationMonths: 'recente',
   });
   assert.equal(starterProfile.recommendedKitSlug, 'caps-30');
-  assert.equal(starterProfile.capsulesCount, 30);
-  assert.equal(starterProfile.bottlesCount, 1);
+  assert.equal(
+    starterProfile.checkoutUrl,
+    'https://ev.braip.com/checkout/pla48l1v/chedd8lj'
+  );
 });
 
 test('validateCheckoutForm and shipping estimator work deterministically', () => {

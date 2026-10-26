@@ -1,6 +1,11 @@
-import type { ProductKit, TestimonialItem } from '../utils/commerce';
+import {
+  BRAIP_CHECKOUT_URLS,
+  type ProductKit,
+  type TestimonialItem,
+} from '../utils/commerce';
 
 export const PRODUCT_MOCKUP_PATH = '/assets/aistudio/download_133a19c6.png';
+export const VITALITY_BANNER_IMAGE_PATH = '/assets/aistudio/image_fc2122c8.png';
 
 export const PRODUCT_KITS: ProductKit[] = [
   {
@@ -14,11 +19,12 @@ export const PRODUCT_KITS: ProductKit[] = [
     originalPrice: 199.90,
     basePrice: 169.90,
     installmentsCount: 12,
-    freeShipping: false,
+    freeShipping: true,
     featured: false,
     bestValue: false,
-    tagText: 'Ciclo 30 Dias · 1 Frasco',
+    tagText: 'Ciclo 30 Dias · 1 Frasco · Frete Grátis',
     recommendedFor: 'Ideal para experimentar a Fórmula Extra Forte (1 cápsula ao dia durante 30 dias).',
+    checkoutUrl: BRAIP_CHECKOUT_URLS['caps-30'],
   },
   {
     id: 'caps-60',
@@ -36,6 +42,7 @@ export const PRODUCT_KITS: ProductKit[] = [
     bestValue: false,
     tagText: 'Mais Vendido · 2 Frascos · Frete Grátis',
     recommendedFor: 'Protocolo recomendado de 60 dias para estabilizar a vasodilatação, firmeza e libido.',
+    checkoutUrl: BRAIP_CHECKOUT_URLS['caps-60'],
   },
   {
     id: 'caps-90',
@@ -53,6 +60,7 @@ export const PRODUCT_KITS: ProductKit[] = [
     bestValue: true,
     tagText: 'Maior Economia · 3 Frascos · Frete Grátis',
     recommendedFor: 'Protocolo completo de 90 dias com máximo desconto por cápsula e restauração profunda.',
+    checkoutUrl: BRAIP_CHECKOUT_URLS['caps-90'],
   },
 ];
 
@@ -181,7 +189,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   {
     question: 'Quais são as opções de kits e preços oficiais?',
     answer:
-      'Nossos kits são medidos pela quantidade de cápsulas para o seu ciclo: 30 Cápsulas (1 Frasco) por R$ 169,90; 60 Cápsulas (2 Frascos) por R$ 249,90 com Frete Grátis; e 90 Cápsulas (3 Frascos) por R$ 349,90 com Frete Grátis e o menor custo por cápsula.',
+      'Nossos kits são medidos pela quantidade de cápsulas e todos contam com Frete Grátis para todo o Brasil: 30 Cápsulas (1 Frasco) por R$ 169,90 com Frete Grátis; 60 Cápsulas (2 Frascos) por R$ 249,90 com Frete Grátis; e 90 Cápsulas (3 Frascos) por R$ 349,90 com Frete Grátis e o menor custo por cápsula.',
   },
   {
     question: 'Como funciona a Garantia de 7 Dias?',

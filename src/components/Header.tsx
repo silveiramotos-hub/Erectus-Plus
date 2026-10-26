@@ -1,10 +1,6 @@
 import React from 'react';
 
-interface HeaderProps {
-  onOpenCheckout: () => void;
-}
-
-export const Header: React.FC<HeaderProps> = ({ onOpenCheckout }) => {
+export const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-40 bg-[#140608]/95 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-8 px-4 sm:px-6 lg:px-8 h-16">
@@ -49,13 +45,12 @@ export const Header: React.FC<HeaderProps> = ({ onOpenCheckout }) => {
 
         {/* Zone 3: 1 primary action */}
         <div className="flex items-center shrink-0">
-          <button
-            type="button"
-            onClick={onOpenCheckout}
+          <a
+            href="#kits"
             className="px-4 py-2.5 text-xs sm:text-sm font-semibold text-zinc-950 bg-[#B8E900] hover:bg-[#c8f526] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             Comprar Agora
-          </button>
+          </a>
         </div>
       </div>
     </header>

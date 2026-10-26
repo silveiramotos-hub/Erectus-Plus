@@ -5,20 +5,16 @@
 
 import React, { useState } from 'react';
 import { INITIAL_TESTIMONIALS } from './data/catalog';
-import type { PaymentMethod, TestimonialItem, KitSlug } from './utils/commerce';
+import { BRAIP_CHECKOUT_URLS, type TestimonialItem } from './utils/commerce';
 import { Header } from './components/Header';
 import { HeroSection } from './components/HeroSection';
 import { BenefitsAndFormula } from './components/BenefitsAndFormula';
+import { VitalityBannerSection } from './components/VitalityBannerSection';
 import { KitsSection } from './components/KitsSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { FaqAndGuarantee } from './components/FaqAndGuarantee';
-import { CheckoutModal } from './components/CheckoutModal';
 
 export default function App() {
-  const [checkoutOpen, setCheckoutOpen] = useState(false);
-  const [selectedKitSlug, setSelectedKitSlug] = useState<KitSlug>('caps-60');
-  const [preferredPayment, setPreferredPayment] =
-    useState<PaymentMethod>('pix');
   const [sharedCep, setSharedCep] = useState('');
   const [testimonials, setTestimonials] = useState<TestimonialItem[]>(() => {
     try {
@@ -32,15 +28,6 @@ export default function App() {
     }
     return INITIAL_TESTIMONIALS;
   });
-
-  const handleSelectKitAndCheckout = (
-    kitSlug: KitSlug,
-    payment: PaymentMethod = 'pix'
-  ) => {
-    setSelectedKitSlug(kitSlug);
-    setPreferredPayment(payment);
-    setCheckoutOpen(true);
-  };
 
   const handleAddTestimonial = (newItem: TestimonialItem) => {
     setTestimonials((prev) => {
@@ -57,20 +44,20 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-zinc-900">
       {/* Strict 3-Zone Top Bar */}
-      <Header onOpenCheckout={() => handleSelectKitAndCheckout('caps-60')} />
+      <Header />
 
       {/* Main Content Flow */}
       <main className="flex-1">
-        <HeroSection onSelectKitAndCheckout={handleSelectKitAndCheckout} />
+        <HeroSection />
 
-        <BenefitsAndFormula
-          onSelectKitAndCheckout={handleSelectKitAndCheckout}
-        />
+        <BenefitsAndFormula />
+
+        {/* Superação & Vitalidade Banner Section */}
+        <VitalityBannerSection />
 
         <KitsSection
           sharedCep={sharedCep}
           onChangeSharedCep={setSharedCep}
-          onSelectKitAndCheckout={handleSelectKitAndCheckout}
         />
 
         <TestimonialsSection
@@ -78,9 +65,7 @@ export default function App() {
           onAddTestimonial={handleAddTestimonial}
         />
 
-        <FaqAndGuarantee
-          onOpenCheckout={() => handleSelectKitAndCheckout('caps-60')}
-        />
+        <FaqAndGuarantee />
       </main>
 
       {/* Compact Mobile Sticky Bottom Bar (<= 52px height, respecting 15% mobile sticky cap) */}
@@ -93,24 +78,15 @@ export default function App() {
             R$ 249,90 ou 12x R$ 20,83
           </p>
         </div>
-        <button
-          type="button"
-          onClick={() => handleSelectKitAndCheckout('caps-60')}
+        <a
+          href={BRAIP_CHECKOUT_URLS['caps-60']}
+          target="_blank"
+          rel="noopener noreferrer"
           className="px-4 py-2 text-xs font-bold text-zinc-950 bg-[#B8E900] rounded-lg whitespace-nowrap shrink-0 cursor-pointer"
         >
           Comprar Agora
-        </button>
+        </a>
       </div>
-
-      {/* Express Simplified Checkout Modal */}
-      <CheckoutModal
-        isOpen={checkoutOpen}
-        selectedKitSlug={selectedKitSlug}
-        initialPaymentMethod={preferredPayment}
-        initialCep={sharedCep}
-        onClose={() => setCheckoutOpen(false)}
-        onChangeKit={(slug) => setSelectedKitSlug(slug)}
-      />
     </div>
   );
 }

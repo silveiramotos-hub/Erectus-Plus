@@ -1,15 +1,9 @@
 import React from 'react';
-import { ShieldCheck, Lock, Truck, CheckCircle2 } from 'lucide-react';
-import type { KitSlug } from '../utils/commerce';
+import { ShieldCheck, Lock, Truck, CheckCircle2, Award } from 'lucide-react';
+import { BRAIP_CHECKOUT_URLS } from '../utils/commerce';
 import { BottleShowcase } from './BottleShowcase';
 
-interface HeroSectionProps {
-  onSelectKitAndCheckout: (kitSlug: KitSlug) => void;
-}
-
-export const HeroSection: React.FC<HeroSectionProps> = ({
-  onSelectKitAndCheckout,
-}) => {
+export const HeroSection: React.FC = () => {
   return (
     <section
       id="topo"
@@ -51,7 +45,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <BottleShowcase bottles={1} variant="compact" />
               <div className="min-w-0 flex-1">
                 <p className="text-[11px] font-semibold text-[#B8E900]">
-                  30, 60 OU 90 CÁPSULAS · 1 CÁPSULA AO DIA
+                  30, 60 OU 90 CÁPSULAS · FRETE GRÁTIS
                 </p>
                 <p className="font-display font-bold text-sm text-white">
                   Erectus Plus — Fórmula Extra Forte
@@ -63,7 +57,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             {/* Concrete Outcomes List */}
-            <ul className="space-y-2 text-xs sm:text-base text-zinc-200 mb-6 sm:mb-8">
+            <ul className="space-y-2 text-xs sm:text-base text-zinc-200 mb-6 sm:mb-7">
               <li className="flex items-start gap-2.5">
                 <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#B8E900] shrink-0 mt-0.5" aria-hidden="true" />
                 <span>
@@ -92,31 +86,67 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               >
                 Ver Kits de 30, 60 e 90 Cápsulas
               </a>
-              <button
-                type="button"
-                onClick={() => onSelectKitAndCheckout('caps-60')}
+              <a
+                href={BRAIP_CHECKOUT_URLS['caps-60']}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="hero-direct-checkout-60"
                 className="inline-flex items-center justify-center px-6 py-3.5 sm:py-4 text-sm sm:text-base font-semibold text-white bg-white/10 hover:bg-white/15 border border-white/20 rounded-xl transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 Comprar 60 Cápsulas · R$ 249,90
-              </button>
+              </a>
             </div>
 
-            {/* Quiet Trust Metadata */}
-            <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-3 text-xs text-zinc-400">
-              <span className="inline-flex items-center gap-1.5">
-                <Lock className="w-3.5 h-3.5 text-[#B8E900]" aria-hidden="true" />
-                Checkout Criptografado 256-bit
-              </span>
-              <span aria-hidden="true">·</span>
-              <span className="inline-flex items-center gap-1.5">
-                <Truck className="w-3.5 h-3.5 text-[#B8E900]" aria-hidden="true" />
-                Embalagem Parda Sem Identificação
-              </span>
-              <span aria-hidden="true">·</span>
-              <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#B8E900]" aria-hidden="true" />
-                Garantia Oficial de 7 Dias
-              </span>
+            {/* Visual Trust Seals Section Directly Below Hero Checkout Buttons */}
+            <div
+              data-testid="hero-trust-seals"
+              aria-label="Selos de Confiança e Segurança"
+              className="mt-6 pt-5 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3"
+            >
+              {/* Seal 1: Compra Segura */}
+              <div className="flex items-center gap-3 rounded-xl bg-white/[0.04] border border-white/10 px-3.5 py-3">
+                <div className="w-9 h-9 rounded-lg bg-[#B8E900]/15 border border-[#B8E900]/35 flex items-center justify-center text-[#B8E900] shrink-0">
+                  <Lock className="w-4 h-4" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-display text-xs sm:text-sm font-bold text-white leading-tight">
+                    Compra 100% Segura
+                  </p>
+                  <p className="text-[11px] text-zinc-400 truncate mt-0.5">
+                    Criptografia SSL 256-Bit
+                  </p>
+                </div>
+              </div>
+
+              {/* Seal 2: Entrega Discreta + Frete Grátis */}
+              <div className="flex items-center gap-3 rounded-xl bg-white/[0.04] border border-white/10 px-3.5 py-3">
+                <div className="w-9 h-9 rounded-lg bg-[#B8E900]/15 border border-[#B8E900]/35 flex items-center justify-center text-[#B8E900] shrink-0">
+                  <Truck className="w-4 h-4" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-display text-xs sm:text-sm font-bold text-white leading-tight">
+                    Entrega Discreta
+                  </p>
+                  <p className="text-[11px] text-zinc-400 truncate mt-0.5">
+                    Caixa Parda · Frete Grátis
+                  </p>
+                </div>
+              </div>
+
+              {/* Seal 3: Garantia Oficial */}
+              <div className="flex items-center gap-3 rounded-xl bg-white/[0.04] border border-white/10 px-3.5 py-3">
+                <div className="w-9 h-9 rounded-lg bg-[#B8E900]/15 border border-[#B8E900]/35 flex items-center justify-center text-[#B8E900] shrink-0">
+                  <ShieldCheck className="w-4 h-4" aria-hidden="true" />
+                </div>
+                <div className="min-w-0">
+                  <p className="font-display text-xs sm:text-sm font-bold text-white leading-tight">
+                    Garantia de 7 Dias
+                  </p>
+                  <p className="text-[11px] text-zinc-400 truncate mt-0.5">
+                    Satisfação & Originalidade
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -124,7 +154,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="lg:col-span-5 flex flex-col justify-between rounded-2xl bg-gradient-to-b from-[#2A0A10] to-[#160508] border border-white/10 p-6 sm:p-8">
             <div className="flex items-center justify-between text-xs text-zinc-300 border-b border-white/10 pb-4">
               <span>30 CÁPSULAS POR FRASCO · 1 CÁPSULA/DIA</span>
-              <span className="font-mono-tabular font-semibold text-[#B8E900]">
+              <span className="inline-flex items-center gap-1 font-mono-tabular font-semibold text-[#B8E900]">
+                <Award className="w-3.5 h-3.5" aria-hidden="true" />
                 100% ORIGINAL
               </span>
             </div>
@@ -137,16 +168,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   Kit Mais Vendido · 60 Cápsulas (2 Frascos)
                 </p>
                 <p className="text-sm font-semibold text-white">
-                  Por apenas <span className="font-mono-tabular text-[#B8E900]">R$ 249,90</span> (ou 12x de R$ 20,83)
+                  Por apenas <span className="font-mono-tabular text-[#B8E900]">R$ 249,90</span> · Frete Grátis
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={() => onSelectKitAndCheckout('caps-60')}
-                className="px-4 py-2 text-xs font-bold text-zinc-950 bg-[#B8E900] hover:bg-[#c8f526] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              <a
+                href={BRAIP_CHECKOUT_URLS['caps-60']}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 text-xs font-bold text-zinc-950 bg-[#B8E900] hover:bg-[#c8f526] rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer text-center"
               >
                 Garantir Oferta
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -163,10 +195,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
           <div>
             <p className="font-mono-tabular text-2xl sm:text-3xl font-bold text-white">
-              Até 36h
+              Frete Grátis
             </p>
             <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-              Janela de suporte vasodilatador ativo com resposta natural ao estímulo
+              Envio expresso gratuito e 100% discreto em todos os kits (30, 60 e 90 cápsulas)
             </p>
           </div>
           <div>
@@ -174,7 +206,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               7 Dias
             </p>
             <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-              Garantia oficial de 7 dias após o recebimento e envio 100% discreto
+              Garantia oficial de 7 dias após o recebimento com reembolso garantido por lei
             </p>
           </div>
           <div>
