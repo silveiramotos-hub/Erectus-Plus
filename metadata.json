@@ -1,0 +1,6 @@
+{
+  "name": "Erectus Plus — Vitalidade e Performance Masculina",
+  "description": "Plataforma oficial Erectus Plus com design focado em conversão, calculadora de protocolo personalizado, depoimentos verificados e checkout simplificado.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
